@@ -7,9 +7,9 @@ library(kableExtra)
 library(tikzDevice)
 library(tinytex)
 
-setwd("C:/Users/miguel/Desktop/reformaseleitorais")
+setwd("C:/Users/miguel/Desktop/reformaseleitorais/reformaseleitorais_R/output")
 
-banco1209 <- read_excel("C:/Users/miguel/Desktop/reformaseleitorais/banco1209.xlsx", sheet = 3)
+banco1209 <- read_excel("C:/Users/miguel/Desktop/reformaseleitorais/reformaseleitorais_R/data/banco1209.xlsx", sheet = 3)
 
 #Primeira tabela descritiva, por diplomas-base
 tabela_diplomasbase <- banco1209 %>%
