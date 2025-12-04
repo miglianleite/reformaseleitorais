@@ -9,11 +9,12 @@ library(tinytex)
 
 setwd("C:/Users/miguel/Desktop/reformaseleitorais/reformaseleitorais_R/output")
 
-banco1209 <- read_excel("C:/Users/miguel/Desktop/reformaseleitorais/reformaseleitorais_R/data/banco1209.xlsx", sheet = 3)
+banco0312 <- read_excel("C:/Users/miguel/Desktop/reformaseleitorais/reformaseleitorais_R/data/banco0312.xlsx", sheet = 3)
 
 #Primeira tabela descritiva, por diplomas-base
-tabela_diplomasbase <- banco1209 %>%
+tabela_diplomasbase <- banco0312 %>%
   mutate(numero.diploma.alterado = as.numeric(numero.diploma.alterado))%>%
+  mutate(numero.diploma = as.numeric(numero.diploma))%>%
   mutate(numero_para_tabela = case_when(altera.diploma ==  "nao" ~ numero.diploma,
                                         altera.diploma == "sim" ~ numero.diploma.alterado))%>%
   mutate(Diploma = case_when(numero_para_tabela == 4737 ~ "L4737 (Código Eleitoral)",
@@ -29,7 +30,7 @@ kbl(tabela_diplomasbase, "latex",label = "tabela1", caption = "Entradas no banco
 
 
 #Segunda tabela descritiva, por tipo de alteração
-tabela_tiposdealt <- banco1209 %>%
+tabela_tiposdealt <- banco0312 %>%
   mutate(numero.diploma.alterado = as.numeric(numero.diploma.alterado))%>%
   filter(altera.diploma=="sim")%>%
   mutate(numero_para_tabela = numero.diploma.alterado)%>%
@@ -45,7 +46,7 @@ tabela_tiposdealt <- banco1209 %>%
 kbl(tabela_tiposdealt, "latex", label = "tabela2", caption = "Alterações por tipo", booktabs = TRUE, centering = TRUE)
 
 #Gráfico 1
-basegrafico1 <- banco1209%>%
+basegrafico1 <- banco0312%>%
   mutate(datas = as.Date(data.diploma, format = "%Y-%m-%d"))%>%
   group_by(datas)%>%
   filter(datas != "1965-07-15")%>%
@@ -65,7 +66,7 @@ ggsave("grafico1.pdf", plot = grafico1, width = 12, height = 8)
   
 
 #Gráfico 2
-basegrafico2 <- banco1209 %>%
+basegrafico2 <- banco0312 %>%
   mutate(datas = as.Date(data.diploma, format = "%Y-%m-%d"))%>%
   rename(tipoalt = "tipo.alteracao")%>%
   mutate(tipoalt = case_when(tipoalt == "inclusao" ~ "Inclusão",
@@ -94,7 +95,7 @@ ggsave("grafico2.pdf", plot = grafico2, width = 12, height = 8)
 
 
 #Gráfico 3
-basegrafico3 <- banco1209%>%
+basegrafico3 <- banco0312%>%
   filter(altera.diploma=="sim")%>%
   mutate(inciso = case_when(substr(indexacao6, 1, 3)=="inc" & indexacao7=="NA" | 
            substr(indexacao7, 1, 3)=="inc" & indexacao8=="NA" |
@@ -127,7 +128,7 @@ ggsave("grafico3.pdf", plot = grafico3, width = 12, height = 8)
 
 
 #Gráfico 4
-basegrafico4 <- banco1209%>%
+basegrafico4 <- banco0312%>%
   filter(altera.diploma=="sim")%>%
   mutate(inciso = case_when(substr(indexacao6, 1, 3)=="inc" & indexacao7=="NA" | 
                               substr(indexacao7, 1, 3)=="inc" & indexacao8=="NA" |
@@ -166,7 +167,7 @@ ggsave("grafico4.pdf", plot = grafico4, width = 12, height = 8)
 
 
 #Gráfico 5
-basegrafico5 <- banco1209%>%
+basegrafico5 <- banco0312%>%
   filter(as.numeric(numero.diploma.alterado) == 9504)%>%
   mutate(datas = as.Date(data.diploma),
          ano = as.numeric(substr(as.character(datas), 1, 4)))%>%
@@ -187,7 +188,7 @@ grafico5 <- ggplot(basegrafico5, mapping = aes(x = ano,
 ggsave("grafico5.pdf", plot = grafico5, width = 8, height = 12)
 
 #Grafico 6
-basegrafico6 <- banco1209%>%
+basegrafico6 <- banco0312%>%
   filter(as.numeric(numero.diploma.alterado) == 9096)%>%
   mutate(datas = as.Date(data.diploma),
          ano = as.numeric(substr(as.character(datas), 1, 4)))%>%
@@ -210,7 +211,7 @@ grafico6 <- ggplot(basegrafico6, mapping = aes(x = ano,
 ggsave("grafico6.pdf", plot = grafico6, width = 12, height = 8)
 
 #Grafico 7
-basegrafico7 <- banco1209%>%
+basegrafico7 <- banco0312%>%
   filter(as.numeric(numero.diploma.alterado) == 9096)%>%
   mutate(datas = as.Date(data.diploma),
          ano = as.numeric(substr(as.character(datas), 1, 4)))%>%
