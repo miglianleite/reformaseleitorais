@@ -46,27 +46,7 @@ tabela_tiposdealt <- banco0502 %>%
 kbl(tabela_tiposdealt, "latex", label = "tabela2", caption = "Alterações por tipo", booktabs = TRUE, centering = TRUE)
 
 #Gráfico 1
-basegrafico1 <- banco0502%>%
-  mutate(datas = as.Date(data.diploma, format = "%Y-%m-%d"))%>%
-  group_by(datas)%>%
-  filter(datas != "1965-07-15")%>%
-  summarise(contagem = n())
-
-grafico1 <- ggplot(basegrafico1, mapping = aes(x = datas,
-                                   y = contagem))+
-  geom_path(color = "darkgrey", linewidth=1)+
-  geom_point(color = "grey2")+
-  labs(x = "Data",
-       y = "Número de novos dispositivos")+
-  scale_x_date(date_breaks = "1 year", date_labels = "%Y")+
-  guides(x = guide_axis(angle = 90))+
-  theme_minimal()+
-  theme(text = element_text(size = 17))
-ggsave("grafico1.pdf", plot = grafico1, width = 12, height = 8)  
-  
-
-#Gráfico 2
-basegrafico2 <- banco0502 %>%
+basegrafico1 <- banco0502 %>%
   mutate(datas = as.Date(data.diploma, format = "%Y-%m-%d"))%>%
   rename(tipoalt = "tipo.alteracao")%>%
   mutate(tipoalt = case_when(tipoalt == "inclusao" ~ "Inclusão",
@@ -79,7 +59,7 @@ basegrafico2 <- banco0502 %>%
   filter(ano > 1965)
 
 
-grafico2 <- ggplot(basegrafico2, mapping = aes(x = ano,
+grafico1 <- ggplot(basegrafico1, mapping = aes(x = ano,
                                    y = contagem,
                                    fill = tipoalt))+
   geom_bar(position = 'stack', stat = 'identity')+
@@ -91,11 +71,11 @@ grafico2 <- ggplot(basegrafico2, mapping = aes(x = ano,
   guides(x = guide_axis(angle = 90))+
   theme_minimal()+
   theme(text = element_text(size = 17))
-ggsave("grafico2.pdf", plot = grafico2, width = 12, height = 8)
+ggsave("grafico1.pdf", plot = grafico1, width = 12, height = 8)
 
 
-#Gráfico 3
-basegrafico3 <- banco0502%>%
+#Gráfico 2
+basegrafico2 <- banco0502%>%
   filter(altera.diploma=="sim")%>%
   mutate(inciso = case_when(substr(indexacao7, 1, 3)=="inc" & indexacao8=="NA" | 
                               substr(indexacao8, 1, 3)=="inc" & indexacao9=="NA" |
@@ -112,7 +92,7 @@ basegrafico3 <- banco0502%>%
   mutate(index = case_when(inciso == 1 ~ "Incisos ou alíneas",
                            inciso == 0 ~ "Artigos ou parágrafos"))
 
-grafico3 <- ggplot(basegrafico3, mapping = aes(x = ano,
+grafico2 <- ggplot(basegrafico2, mapping = aes(x = ano,
                                  y = contagem,
                                  fill = index))+
   geom_bar(position = "fill", stat = "identity")+
@@ -124,11 +104,11 @@ grafico3 <- ggplot(basegrafico3, mapping = aes(x = ano,
   guides(x = guide_axis(angle = 90))+
   theme_minimal()+
   theme(text = element_text(size = 17))
-ggsave("grafico3.pdf", plot = grafico3, width = 12, height = 8)
+ggsave("grafico2.pdf", plot = grafico2, width = 12, height = 8)
 
 
-#Gráfico 4
-basegrafico4 <- banco0502%>%
+#Gráfico 3
+basegrafico3 <- banco0502%>%
   filter(altera.diploma=="sim")%>%
   mutate(inciso = case_when(substr(indexacao7, 1, 3)=="inc" & indexacao8=="NA" | 
                               substr(indexacao8, 1, 3)=="inc" & indexacao9=="NA" |
@@ -150,7 +130,7 @@ basegrafico4 <- banco0502%>%
                              tipoalt == "renumeracao" ~ "Renumeração",
                              tipoalt == "nova redacao" ~ "Nova redação"))
 
-grafico4 <- ggplot(basegrafico4, mapping = aes(x = ano,
+grafico3 <- ggplot(basegrafico3, mapping = aes(x = ano,
                                    y = contagem,
                                    fill = tipoalt))+
   geom_bar(position = "stack", stat = "identity")+
@@ -163,11 +143,11 @@ grafico4 <- ggplot(basegrafico4, mapping = aes(x = ano,
   theme_minimal()+
   theme_bw()+
   theme(text = element_text(size = 17))
-ggsave("grafico4.pdf", plot = grafico4, width = 12, height = 8)
+ggsave("grafico3.pdf", plot = grafico3, width = 12, height = 8)
 
 
-#Gráfico 5
-basegrafico5 <- banco0502%>%
+#Gráfico 4
+basegrafico4 <- banco0502%>%
   filter(as.numeric(numero.diploma.alterado) == 9504)%>%
   mutate(datas = as.Date(data.diploma),
          ano = as.numeric(substr(as.character(datas), 1, 4)))%>%
@@ -175,7 +155,7 @@ basegrafico5 <- banco0502%>%
   summarise(contagem = n())%>%
   mutate(livro = str_wrap(parte, width = 20))
 
-grafico5 <- ggplot(basegrafico5, mapping = aes(x = ano,
+grafico4 <- ggplot(basegrafico4, mapping = aes(x = ano,
                                    y = contagem))+
   geom_point()+
   geom_line(color = "darkgrey", linetype = "dashed")+
@@ -185,10 +165,10 @@ grafico5 <- ggplot(basegrafico5, mapping = aes(x = ano,
   guides(x = guide_axis(angle = 90))+
   theme_minimal()+
   theme_bw()
-ggsave("grafico5.pdf", plot = grafico5, width = 8, height = 12)
+ggsave("grafico4.pdf", plot = grafico4, width = 8, height = 12)
 
-#Grafico 6
-basegrafico6 <- banco0502%>%
+#Gráfico 5
+basegrafico5 <- banco0502%>%
   filter(as.numeric(numero.diploma.alterado) == 9096)%>%
   mutate(datas = as.Date(data.diploma),
          ano = as.numeric(substr(as.character(datas), 1, 4)))%>%
@@ -196,7 +176,7 @@ basegrafico6 <- banco0502%>%
   summarise(contagem = n())%>%
   mutate(titulo = str_wrap(titulo, width = 20))
 
-grafico6 <- ggplot(basegrafico6, mapping = aes(x = ano,
+grafico5 <- ggplot(basegrafico5, mapping = aes(x = ano,
                                    y = contagem))+
   geom_point()+
   geom_line(color = "darkgrey", linetype = "dashed")+
@@ -207,10 +187,10 @@ grafico6 <- ggplot(basegrafico6, mapping = aes(x = ano,
   theme_minimal()+
   theme_bw()+
   theme(text = element_text(size = 17))
-ggsave("grafico6.pdf", plot = grafico6, width = 12, height = 8)
+ggsave("grafico5.pdf", plot = grafico5, width = 12, height = 8)
 
-#Grafico 7
-basegrafico7 <- banco0502%>%
+#Gráfico 6
+basegrafico6 <- banco0502%>%
   filter(as.numeric(numero.diploma.alterado) == 9096)%>%
   mutate(datas = as.Date(data.diploma),
          ano = as.numeric(substr(as.character(datas), 1, 4)))%>%
@@ -218,7 +198,7 @@ basegrafico7 <- banco0502%>%
   summarise(contagem = n())%>%
   mutate(capitulo = str_wrap(capitulo, width = 20))
 
-grafico7 <- ggplot(basegrafico7, mapping = aes(x = ano,
+grafico6 <- ggplot(basegrafico6, mapping = aes(x = ano,
                                                y = contagem))+
   geom_point()+
   geom_line(color = "darkgrey", linetype = "dashed")+
@@ -230,4 +210,4 @@ grafico7 <- ggplot(basegrafico7, mapping = aes(x = ano,
   theme_minimal()+
   theme_bw()+
   theme(text = element_text(size = 17))
-ggsave("grafico7.pdf", plot = grafico7, width = 12, height = 8)
+ggsave("grafico6.pdf", plot = grafico6, width = 12, height = 8)
