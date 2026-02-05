@@ -159,7 +159,7 @@ grafico4 <- ggplot(basegrafico4, mapping = aes(x = ano,
                                    y = contagem))+
   geom_point()+
   geom_line(color = "darkgrey", linetype = "dashed")+
-  facet_wrap(~parte)+
+  facet_wrap(~parte, labeller = label_wrap_gen(width=15))+
   labs(x = "Ano",
        y = "Número de alterações")+
   guides(x = guide_axis(angle = 90))+
