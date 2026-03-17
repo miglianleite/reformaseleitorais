@@ -72,6 +72,7 @@ grafico1 <- ggplot(basegrafico1, mapping = aes(x = ano,
   theme_minimal()+
   theme(text = element_text(size = 17))
 ggsave("grafico1.pdf", plot = grafico1, width = 12, height = 8)
+ggsave("grafico1.png", plot = grafico1, width = 12, height = 8)
 
 
 #Gráfico 2
@@ -105,7 +106,7 @@ grafico2 <- ggplot(basegrafico2, mapping = aes(x = ano,
   theme_minimal()+
   theme(text = element_text(size = 17))
 ggsave("grafico2.pdf", plot = grafico2, width = 12, height = 8)
-
+ggsave("grafico2.png", plot = grafico2, width = 12, height = 8)
 
 #Gráfico 3
 basegrafico3 <- banco0502%>%
@@ -144,7 +145,7 @@ grafico3 <- ggplot(basegrafico3, mapping = aes(x = ano,
   theme_bw()+
   theme(text = element_text(size = 17))
 ggsave("grafico3.pdf", plot = grafico3, width = 12, height = 8)
-
+ggsave("grafico3.png", plot = grafico3, width = 12, height = 8)
 
 #Gráfico 4
 basegrafico4 <- banco0502%>%
@@ -166,6 +167,8 @@ grafico4 <- ggplot(basegrafico4, mapping = aes(x = ano,
   theme_minimal()+
   theme_bw()
 ggsave("grafico4.pdf", plot = grafico4, width = 8, height = 12)
+ggsave("grafico4.png", plot = grafico4, width = 8, height = 12)
+
 
 #Gráfico 5
 basegrafico5 <- banco0502%>%
@@ -188,6 +191,7 @@ grafico5 <- ggplot(basegrafico5, mapping = aes(x = ano,
   theme_bw()+
   theme(text = element_text(size = 17))
 ggsave("grafico5.pdf", plot = grafico5, width = 12, height = 8)
+ggsave("grafico5.png", plot = grafico5, width = 12, height = 8)
 
 #Gráfico 6
 basegrafico6 <- banco0502%>%
@@ -211,3 +215,4 @@ grafico6 <- ggplot(basegrafico6, mapping = aes(x = ano,
   theme_bw()+
   theme(text = element_text(size = 17))
 ggsave("grafico6.pdf", plot = grafico6, width = 12, height = 8)
+ggsave("grafico6.png", plot = grafico6, width = 12, height = 8)
