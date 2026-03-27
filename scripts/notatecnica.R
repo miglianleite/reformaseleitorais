@@ -1,3 +1,4 @@
+#Primeiro chamamos os pacotes necessários, definimos o diretório para os outputs e importamos a base de dados via read_excel()
 library(tidyverse)
 library(stargazer)
 library(readxl)
@@ -6,6 +7,7 @@ library(janitor)
 library(kableExtra)
 library(tikzDevice)
 library(tinytex)
+library(writexl)
 
 setwd("C:/Users/miguel/Desktop/reformaseleitorais/reformaseleitorais_R/output")
 
@@ -26,7 +28,7 @@ tabela_diplomasbase <- banco0502 %>%
   mutate(Total = Originais + Alterações)%>%
   adorn_totals("row")
 
-kbl(tabela_diplomasbase, "latex",label = "tabela1", caption = "Entradas no banco por diploma-base", booktabs = TRUE, centering = TRUE)
+kbl(tabela_diplomasbase, "latex",label = "tabela1", caption = "Entradas no banco por diploma-base", booktabs = TRUE, centering = TRUE) #E aqui o output para latex.
 
 
 #Segunda tabela descritiva, por tipo de alteração
