@@ -9,9 +9,9 @@ library(tikzDevice)
 library(tinytex)
 library(writexl)
 
-setwd("C:/Users/miguel/Desktop/reformaseleitorais/reformaseleitorais_R/output")
+setwd("C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output")
 
-banco0502 <- read_excel("C:/Users/miguel/Desktop/reformaseleitorais/reformaseleitorais_R/data/banco0502.xlsx")
+banco0502 <- read_excel("C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/data/banco0502.xlsx")
 
 #Primeira tabela descritiva, por diplomas-base
 tabela_diplomasbase <- banco0502 %>%
@@ -29,6 +29,7 @@ tabela_diplomasbase <- banco0502 %>%
   adorn_totals("row")
 
 kbl(tabela_diplomasbase, "latex",label = "tabela1", caption = "Entradas no banco por diploma-base", booktabs = TRUE, centering = TRUE) #E aqui o output para latex.
+write_xlsx(tabela_diplomasbase, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/tabela_diplomasbase.xlsx")
 
 
 #Segunda tabela descritiva, por tipo de alteração
@@ -46,6 +47,7 @@ tabela_tiposdealt <- banco0502 %>%
   adorn_totals("row")
 
 kbl(tabela_tiposdealt, "latex", label = "tabela2", caption = "Alterações por tipo", booktabs = TRUE, centering = TRUE)
+write_xlsx(tabela_tiposdealt, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/tabela_tiposdealt.xlsx")
 
 #Gráfico 1
 basegrafico1 <- banco0502 %>%
@@ -60,6 +62,7 @@ basegrafico1 <- banco0502 %>%
   summarise(contagem = n())%>%
   filter(ano > 1965)
 
+write_xlsx(basegrafico1, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico1.xlsx")
 
 grafico1 <- ggplot(basegrafico1, mapping = aes(x = ano,
                                    y = contagem,
@@ -94,6 +97,8 @@ basegrafico2 <- banco0502%>%
   summarise(contagem = n())%>%
   mutate(index = case_when(inciso == 1 ~ "Incisos ou alíneas",
                            inciso == 0 ~ "Artigos ou parágrafos"))
+
+write_xlsx(basegrafico2, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico2.xlsx")
 
 grafico2 <- ggplot(basegrafico2, mapping = aes(x = ano,
                                  y = contagem,
@@ -133,6 +138,8 @@ basegrafico3 <- banco0502%>%
                              tipoalt == "renumeracao" ~ "Renumeração",
                              tipoalt == "nova redacao" ~ "Nova redação"))
 
+write_xlsx(basegrafico3, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico3.xlsx")
+
 grafico3 <- ggplot(basegrafico3, mapping = aes(x = ano,
                                    y = contagem,
                                    fill = tipoalt))+
@@ -158,6 +165,8 @@ basegrafico4 <- banco0502%>%
   summarise(contagem = n())%>%
   mutate(livro = str_wrap(parte, width = 20))
 
+write_xlsx(basegrafico4, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico4.xlsx")
+
 grafico4 <- ggplot(basegrafico4, mapping = aes(x = ano,
                                    y = contagem))+
   geom_point()+
@@ -181,6 +190,8 @@ basegrafico5 <- banco0502%>%
   summarise(contagem = n())%>%
   mutate(titulo = str_wrap(titulo, width = 20))
 
+write_xlsx(basegrafico5, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico5.xlsx")
+
 grafico5 <- ggplot(basegrafico5, mapping = aes(x = ano,
                                    y = contagem))+
   geom_point()+
@@ -203,6 +214,8 @@ basegrafico6 <- banco0502%>%
   group_by(ano, capitulo)%>%
   summarise(contagem = n())%>%
   mutate(capitulo = str_wrap(capitulo, width = 20))
+
+write_xlsx(basegrafico6, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico6.xlsx")
 
 grafico6 <- ggplot(basegrafico6, mapping = aes(x = ano,
                                                y = contagem))+
