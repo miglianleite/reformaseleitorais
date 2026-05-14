@@ -8,11 +8,9 @@ library(kableExtra)
 library(tikzDevice)
 library(tinytex)
 library(writexl)
+library(here)
 
-setwd("C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output")
-
-banco_reformas <- read_excel("C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/data/banco_reformas.xlsx")
-
+banco_reformas <- read_excel(here("data", "banco_reformas.xlsx"))
 
 #---------------------------
 #Tabela 2, por diplomas-base
@@ -31,8 +29,8 @@ tabela_diplomasbase <- banco_reformas %>%
   mutate(Total = Originais + Alterações)%>%
   adorn_totals("row") #Adicionamos uma coluna de totais
 
-kbl(tabela_diplomasbase, "latex",label = "tabela1", caption = "Entradas no banco por diploma-base", booktabs = TRUE, centering = TRUE) #E aqui o output para latex.
-write_xlsx(tabela_diplomasbase, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/tabela_diplomasbase.xlsx") #Salvando a planilha em Excel
+kbl(tabela_diplomasbase, "latex", label = "tabela1", caption = "Entradas no banco por diploma-base", booktabs = TRUE, centering = TRUE) # Output para latex
+write_xlsx(tabela_diplomasbase, here("output", "tabela_diplomasbase.xlsx"))
 
 
 #-------------------------------
@@ -55,7 +53,7 @@ tabela_tiposdealt <- banco_reformas %>%
   adorn_totals("row") #Adicionamos uma coluna de totais
 
 kbl(tabela_tiposdealt, "latex", label = "tabela2", caption = "Alterações por tipo", booktabs = TRUE, centering = TRUE) #Exportando para latex
-write_xlsx(tabela_tiposdealt, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/tabela_tiposdealt.xlsx") #Salvando a planilha em Excel
+write_xlsx(tabela_tiposdealt, here("output", "tabela_tiposdealt.xlsx"))
 
 
 #---------
@@ -73,7 +71,7 @@ basegrafico1 <- banco_reformas %>%
   summarise(contagem = n())%>% #Criamos uma contagem de alterações por tipo, para cada ano
   filter(ano > 1965) #Excluímos o ano de sanção do Código Eleitoral
 
-write_xlsx(basegrafico1, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico1.xlsx") #Salvando a planilha em Excel
+write_xlsx(basegrafico1, here("output", "basegrafico1.xlsx"))
 
 #Abaixo geramos o gráfico de barras correspondente, em que as cores (fill) são dadas pelo tipo de alteração
 grafico1 <- ggplot(basegrafico1, mapping = aes(x = ano,
@@ -89,9 +87,9 @@ grafico1 <- ggplot(basegrafico1, mapping = aes(x = ano,
   theme_minimal()+
   theme(text = element_text(size = 17))
 
-ggsave("grafico1.pdf", plot = grafico1, width = 12, height = 8) #salvando o gráfico em pdf
-ggsave("grafico1.png", plot = grafico1, width = 12, height = 8) #E em png
-ggsave("grafico1.svg", plot = grafico1, width = 12, height = 8) #E svg
+ggsave(here("output", "grafico1.pdf"), plot = grafico1, width = 12, height = 8) #Salvando o gráfico em pdf
+ggsave(here("output", "grafico1.png"), plot = grafico1, width = 12, height = 8) #Em png
+ggsave(here("output", "grafico1.svg"), plot = grafico1, width = 12, height = 8) #E svg
 
 
 #---------
@@ -114,7 +112,7 @@ basegrafico2 <- banco_reformas%>%
   mutate(index = case_when(inciso == 1 ~ "Incisos ou alíneas",
                            inciso == 0 ~ "Artigos ou parágrafos")) #Criamos uma variável para melhor legibilidade no gráfico
 
-write_xlsx(basegrafico2, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico2.xlsx") #Salvando a planilha em Excel
+write_xlsx(basegrafico2, here("output", "basegrafico2.xlsx"))
 
 #Abaixo geramos o gráfico correspondente. As cores (fill) são dadas pelo nível de alteração ("Incisos ou alíneas" VS "Artigos ou parágrafos")
 grafico2 <- ggplot(basegrafico2, mapping = aes(x = ano,
@@ -130,9 +128,9 @@ grafico2 <- ggplot(basegrafico2, mapping = aes(x = ano,
   theme_minimal()+
   theme(text = element_text(size = 17))
 
-ggsave("grafico2.pdf", plot = grafico2, width = 12, height = 8) #Salvando o gráfico em pdf
-ggsave("grafico2.png", plot = grafico2, width = 12, height = 8) #E em png
-ggsave("grafico2.svg", plot = grafico2, width = 12, height = 8) #E svg
+ggsave(here("output", "grafico2.pdf"), plot = grafico2, width = 12, height = 8) #Salvando o gráfico em pdf
+ggsave(here("output", "grafico2.png"), plot = grafico2, width = 12, height = 8) #Em png
+ggsave(here("output", "grafico2.svg"), plot = grafico2, width = 12, height = 8) #E svg
 
 #---------
 #Figura 3
@@ -159,7 +157,7 @@ basegrafico3 <- banco_reformas%>%
                              tipoalt == "renumeracao" ~ "Renumeração",
                              tipoalt == "nova redacao" ~ "Nova redação")) #Melhoramos também a legibilidade dos tipos de alteração
 
-write_xlsx(basegrafico3, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico3.xlsx") #Salvando a planilha em Excel
+write_xlsx(basegrafico3, here("output", "basegrafico3.xlsx"))
 
 #Abaixo geramos o gráfico correspondente. As cores (fill) são dadas pelo tipo de alteração, enquanto as facetas (facet_wrap) se dividem pelo nível das modificações - entre incisos ou alíneas e artigos ou parágrafos
 grafico3 <- ggplot(basegrafico3, mapping = aes(x = ano,
@@ -176,9 +174,9 @@ grafico3 <- ggplot(basegrafico3, mapping = aes(x = ano,
   theme_bw()+
   theme(text = element_text(size = 17))
 
-ggsave("grafico3.pdf", plot = grafico3, width = 12, height = 8) #Salvando gráfico em pdf
-ggsave("grafico3.png", plot = grafico3, width = 12, height = 8) #E em png
-ggsave("grafico3.svg", plot = grafico3, width = 12, height = 8) #E svg
+ggsave(here("output", "grafico3.pdf"), plot = grafico3, width = 12, height = 8) #Salvando o gráfico em pdf
+ggsave(here("output", "grafico3.png"), plot = grafico3, width = 12, height = 8) #Em png
+ggsave(here("output", "grafico3.svg"), plot = grafico3, width = 12, height = 8) #E svg
 
 #---------
 #Figura 4
@@ -190,7 +188,7 @@ basegrafico4 <- banco_reformas%>%
   group_by(ano, parte)%>% #Agrupamos por ano e por divisão temática (parte)
   summarise(contagem = n()) #Criamos uma contagem para alterações por divisão temática e ano
 
-write_xlsx(basegrafico4, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico4.xlsx") #Salvando planilha em Excel
+write_xlsx(basegrafico4, here("output", "basegrafico4.xlsx"))
 
 #Abaixo geramos o gráfico correspondente. As janelas (facet_wrap) são dadas pelas divisões temáticas
 grafico4 <- ggplot(basegrafico4, mapping = aes(x = ano,
@@ -204,9 +202,9 @@ grafico4 <- ggplot(basegrafico4, mapping = aes(x = ano,
   theme_minimal()+
   theme_bw()
 
-ggsave("grafico4.pdf", plot = grafico4, width = 8, height = 12) #Gráfico em pdf
-ggsave("grafico4.png", plot = grafico4, width = 8, height = 12) #E em png
-ggsave("grafico4.svg", plot = grafico4, width = 8, height = 12) #E svg
+ggsave(here("output", "grafico4.pdf"), plot = grafico4, width = 8, height = 12) #Salvando gráfico em pdf
+ggsave(here("output", "grafico4.png"), plot = grafico4, width = 8, height = 12) #Em png
+ggsave(here("output", "grafico4.svg"), plot = grafico4, width = 8, height = 12) #E svg
 
 #---------
 #Figura 5
@@ -219,7 +217,7 @@ basegrafico5 <- banco_reformas%>%
   summarise(contagem = n())%>%
   mutate(titulo = str_wrap(titulo, width = 20))
 
-write_xlsx(basegrafico5, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico5.xlsx") #Salvando a planilha em Excel
+write_xlsx(basegrafico5, here("output", "basegrafico5.xlsx"))
 
 #Abaixo geramos o gráfico correspondente. As janelas (facet_wrap) são dadas pelo título de cada segmento da lei
 grafico5 <- ggplot(basegrafico5, mapping = aes(x = ano,
@@ -234,9 +232,9 @@ grafico5 <- ggplot(basegrafico5, mapping = aes(x = ano,
   theme_bw()+
   theme(text = element_text(size = 17))
 
-ggsave("grafico5.pdf", plot = grafico5, width = 12, height = 8) #Gráfico em pdf
-ggsave("grafico5.png", plot = grafico5, width = 12, height = 8) #E em png
-ggsave("grafico5.svg", plot = grafico5, width = 12, height = 8) #E svg
+ggsave(here("output", "grafico5.pdf"), plot = grafico5, width = 12, height = 8) #Gráfico em pdf
+ggsave(here("output", "grafico5.png"), plot = grafico5, width = 12, height = 8) #Em png
+ggsave(here("output", "grafico5.svg"), plot = grafico5, width = 12, height = 8) #E svg
 
 #---------
 #Figura 6
@@ -249,7 +247,7 @@ basegrafico6 <- banco_reformas%>%
   summarise(contagem = n())%>% 
   mutate(capitulo = str_wrap(capitulo, width = 20))
 
-write_xlsx(basegrafico6, "C:/Users/miguel/Desktop/pesquisa/reformaseleitorais/reformaseleitorais_R/output/basegrafico6.xlsx") #Salvando a planilha em Excel
+write_xlsx(basegrafico6, here("output", "basegrafico6.xlsx"))
 
 #Abaixo geramos o gráfico correspondente. As janelas (facet_wrap) são dadas pelos capítulos da lei
 grafico6 <- ggplot(basegrafico6, mapping = aes(x = ano,
@@ -265,6 +263,6 @@ grafico6 <- ggplot(basegrafico6, mapping = aes(x = ano,
   theme_bw()+
   theme(text = element_text(size = 17))
 
-ggsave("grafico6.pdf", plot = grafico6, width = 12, height = 8) #Gráfico em pdf
-ggsave("grafico6.png", plot = grafico6, width = 12, height = 8) #E em png
-ggsave("grafico6.svg", plot = grafico6, width = 12, height = 8) #E svg
+ggsave(here("output", "grafico6.pdf"), plot = grafico6, width = 12, height = 8) #Gráfico em pdf
+ggsave(here("output", "grafico6.png"), plot = grafico6, width = 12, height = 8) #Em png
+ggsave(here("output", "grafico6.svg"), plot = grafico6, width = 12, height = 8) #E svg
